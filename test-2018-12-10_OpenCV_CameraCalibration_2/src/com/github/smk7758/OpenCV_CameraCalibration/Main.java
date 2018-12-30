@@ -23,7 +23,7 @@ import org.opencv.imgcodecs.Imgcodecs;
 import org.opencv.imgproc.Imgproc;
 
 public class Main {
-	final String picFolderPathString = "S:\\CameraCaliblation\\samples_CameraCaliblation";
+	final String picFolderPathString = "S:\\CameraCaliblation\\2018-12-31";
 	final Path picFolderPath = Paths.get(picFolderPathString);
 
 	static {
@@ -87,7 +87,7 @@ public class Main {
 		Map<String, Mat> exportMats = new HashMap<>();
 		exportMats.put("CameraMatrix", cameraMatrix);
 		exportMats.put("DistortionCoefficients", distortionCoefficients);
-		final Path exportFilePath = Paths.get("F:\\users\\smk7758\\Desktop\\CameraCalibration_2018-12-30.xml");
+		final Path exportFilePath = Paths.get("S:\\CameraCaliblation\\CameraCalibration_2018-12-31.xml");
 		MatIO.exportMat(exportMats, exportFilePath);
 
 		System.out.println("FINISH!");
@@ -141,7 +141,18 @@ public class Main {
 		Calib3d.drawChessboardCorners(mat, patternSize, corners, true);
 
 		Path picPath = Paths.get(picPathString);
-		Path path = Paths.get("S:\\CameraCaliblation\\output", picPath.getFileName().toString());
+		Path folderPath = Paths.get("S:\\CameraCaliblation\\2018-12-31_output");
+		Path path = Paths.get(folderPath.toString(), picPath.getFileName().toString());
+
+		if (!Files.exists(folderPath) || !Files.isDirectory(folderPath)) {
+			try {
+				System.out.println("There was no folder, so it is createing a folder. : " + folderPath.toString());
+				Files.createDirectory(folderPath);
+			} catch (IOException ex) {
+				ex.printStackTrace();
+			}
+		}
+
 		Imgcodecs.imwrite(path.toString(), mat);
 
 		return Optional.of(inputMat);

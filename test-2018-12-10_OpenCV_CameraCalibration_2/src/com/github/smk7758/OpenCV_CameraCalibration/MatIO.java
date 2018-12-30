@@ -35,14 +35,14 @@ public class MatIO {
 		Map<String, Mat> mats = new HashMap<>();
 		for (int i = 0; i < rootNodeList.getLength(); i++) {
 			if (rootNodeList.item(i).getNodeType() == Node.ELEMENT_NODE) {
-				mats.put(rootNodeList.item(i).getNodeName(), getMat(root, rootNodeList.item(i).getNodeName()));
+				mats.put(rootNodeList.item(i).getNodeName(), getMatElement(root, rootNodeList.item(i).getNodeName()));
 			}
 		}
 
 		return mats;
 	}
 
-	private static Mat getMat(Element root, String matName) {
+	private static Mat getMatElement(Element root, String matName) {
 		NodeList matDataRoot = root.getElementsByTagName(matName);
 		Element matDataElement = (Element) matDataRoot.item(0);
 		final int rows = Integer.valueOf(matDataElement.getAttribute("rows"));
@@ -99,7 +99,7 @@ public class MatIO {
 			document.appendChild(root);
 
 			for (Entry<String, Mat> entryMat : mats.entrySet()) {
-				final Element matData = setMat(document, entryMat.getKey(), entryMat.getValue());
+				final Element matData = setMatElement(document, entryMat.getKey(), entryMat.getValue());
 				root.appendChild(matData);
 			}
 
@@ -110,7 +110,7 @@ public class MatIO {
 		}
 	}
 
-	private static Element setMat(Document document, String matName, Mat mat) {
+	private static Element setMatElement(Document document, String matName, Mat mat) {
 		Element matData = document.createElement(matName);
 		matData.setAttribute("rows", String.valueOf(mat.rows()));
 		matData.setAttribute("cols", String.valueOf(mat.cols()));
